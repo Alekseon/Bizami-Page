@@ -1,8 +1,9 @@
-import dotenv from "dotenv";
+// gatsby-config.js (CommonJS dla Gatsby 2)
+require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+const isDev = process.env.NODE_ENV === "development";
 
-export default {
+module.exports = {
   siteMetadata: {
     title: `Welcome to Bizami – Business Intelligence in Logistic`,
     siteUrl: "https://www.bizami.pl",
@@ -17,8 +18,15 @@ export default {
       options: {
         projectId: "q46bplag",
         dataset: "production",
-        watchMode: true,
+        // token trzymaj w env; nazwa dowolna – ważne by była ustawiona w Netlify/locally
         token: process.env.SANITY_TOKEN,
+        useCdn: false,
+        // WYMAGANE: jawna wersja API Sanity
+        apiVersion: process.env.SANITY_API_VERSION || "2024-01-01",
+        // Nie używaj watchMode w produkcji (blokuje buildy)
+        watchMode: isDev,
+        // opcjonalnie: overlayDrafts tylko w dev/preview
+        // overlayDrafts: isDev,
       },
     },
     {
