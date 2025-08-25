@@ -1,11 +1,11 @@
 {
   "root": true,
   "api": {
-    "projectId": "q46bplag",
+    "projectId": "bid9i1uf",
     "dataset": "production"
   },
   "project": {
-    "name": "bizami"
+    "name": "bizami-page"
   },
   "plugins": [
     "@sanity/base",
