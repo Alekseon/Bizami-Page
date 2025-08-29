@@ -53,6 +53,10 @@ export default function useDemoInfo({ values = {} }) {
 
               const payload = await parseJsonSafe(res);
 
+              console.log("send-email STATUS:", res.status);
+              console.log("send-email RESPONSE:", payload);
+
+
               if (!res.ok || payload?.ok === false) {
                   const err = new Error(
                     payload?.message || "Wysyłka formularza nie powiodła się"
