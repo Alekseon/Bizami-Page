@@ -9,7 +9,17 @@ export default {
     {
       type: 'localeText', name: 'listItemDescT', title: 'List item description',
     },
-    
+    {
+      type: 'localeText', name: 'listItemDescT2', title: 'Test',
+    },
+    {
+      name: 'imageIcon',
+      title: 'Icon',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    },
     
   ],
 };

@@ -9,24 +9,13 @@ const OfferStyled = styled.section`
     background-color: var(--blue-dark-1);
     z-index: -2;
     h2 {
-      background-color: white;
+    background: white;
       position: relative;
       display: inline-block;
       padding: 12px 25px;
       margin-top: 0;
       margin-bottom: 60px;
       z-index: 1;
-      &:before {
-        content: '';
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: -10px;
-        top: -10px;
-        opacity: 0.3;
-        background-color: white;
-        z-index: -1;
-      }
     }
     .content {
       .box {
@@ -40,7 +29,7 @@ const OfferStyled = styled.section`
         .icon {
           margin-bottom: 10px;
         }
-        h4 {
+        h3 {
           margin-top: 0;
           color: white;
           font-size: 26px;
@@ -54,7 +43,7 @@ const OfferStyled = styled.section`
     }
   }
   @media (min-width: 769px) {
-    padding: 95px 60px 30px 60px;
+    padding: 80px 60px 80px 60px;
     background-color: var(--blue-dark-1);
     z-index: -2;
     h2 {
@@ -65,17 +54,6 @@ const OfferStyled = styled.section`
       margin-top: 0;
       margin-bottom: 60px;
       z-index: 1;
-      &:before {
-        content: '';
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: -20px;
-        top: -20px;
-        opacity: 0.3;
-        background-color: white;
-        z-index: -1;
-      }
     }
     .content {
       display: grid;
@@ -91,7 +69,7 @@ const OfferStyled = styled.section`
         .icon {
           margin-bottom: 10px;
         }
-        h4 {
+        h3 {
           margin-top: 0;
           color: white;
           font-size: 32px;
@@ -120,7 +98,7 @@ export default function Offer({ data }) {
                   alt="mission icon"
                 />
               </picture>
-              <h4 className="title-marked accent">{offer.titleT}</h4>
+              <h3 className="title-marked accent">{offer.titleT}</h3>
               <span>{offer.descriptionT.split(/\r|\n/).map((item, index) => {
                 return <p key={`line-${index}`}>{item}</p>;
               })}</span>

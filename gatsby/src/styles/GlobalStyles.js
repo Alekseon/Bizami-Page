@@ -26,7 +26,6 @@ const GlobalStyles = createGlobalStyle`
     font-weight: 400;
     letter-spacing: 0.8px;
     line-height: 1.5;
-    background-color: var(--blue-light-1);
   }
 
   * {
@@ -129,30 +128,7 @@ const GlobalStyles = createGlobalStyle`
         border-color: var(--blue-dark-2);  
       }
     }
-  }
-
-  /* Marked titles */
-  .title-marked {
-    position: relative;
-    display: inline-block;
-    z-index: 1;
-    &::before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 65%;
-      left: 20px;
-      top: 47%;
-      background-color: var(--blue-light-2);
-      z-index: -1;
-    }
-    &.accent {
-      &::before {
-        background-color: var(--accent);
-        opacity: 0.6;
-      }
-    }
-  }
+  }s
 `;
 
 export default GlobalStyles;

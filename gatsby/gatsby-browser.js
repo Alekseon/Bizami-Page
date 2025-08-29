@@ -23,8 +23,8 @@ export const onClientEntry = () => {
 
 export function wrapPageElement({ element, props }) {
   
-  return <GoogleReCaptchaProvider reCaptchaKey={`${process.env.GATSBY_CAPTCHA_KEY}`}>
-           <Layout {...props}>{element}</Layout>;
+  return <GoogleReCaptchaProvider reCaptchaKey={`${process.env.GATSBY_CAPTCHA_KEY}`} scriptProps={{ async: true, defer: true }} >
+           <Layout {...props}>{element}</Layout>
          </GoogleReCaptchaProvider>
 }
 

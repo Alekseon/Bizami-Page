@@ -11,7 +11,7 @@ export const HeaderTag = styled.header`
 `;
 
 export const HeaderTopInfo = styled.div`
-  background: var(--blue-dark-1);
+  background: var(--blue-main);
   @media (max-width: 768px) {
     display: none;
   }
@@ -212,7 +212,7 @@ export const MobileMenuStyles = styled.div`
       bottom: 0;
       left: 0;
       right: 0;
-      background: var(--blue-dark-1);
+      background: var(--blue-main);
       color: var(--white);
       display: flex;
       flex-direction: column;

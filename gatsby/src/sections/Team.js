@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const TeamStyled = styled.section`
   @media (max-width: 768px) {
-    background-color: var(--blue-dark-1);
+    background-color: var(--blue-main);
     padding: 40px 0 0 0;
     display: flex;
     flex-direction: column;
@@ -48,7 +48,7 @@ const TeamStyled = styled.section`
     }
   }
   @media (min-width: 769px) {
-    background-color: var(--blue-dark-1);
+    background-color: var(--blue-main);
     padding: 20px 85px 120px 85px;
     display: flex;
     flex-direction: column;
@@ -98,15 +98,15 @@ const TeamStyled = styled.section`
 const translations = {
   en: {
     OurTeam: 'Our Team',
-    
+
   },
   pl: {
     OurTeam: 'Nasz zespół',
-    
+
   },
 };
 
- 
+
 
 
 
@@ -117,7 +117,7 @@ export default function Contact({ data, locale }) {
   };
 
   return (
-    <TeamStyled id="team">
+    <TeamStyled id="team" style={{display: 'none'}}>
       <h2>{getTranslation('OurTeam')}</h2>
       <div className="boxes-container">
         {data.teamMembers &&

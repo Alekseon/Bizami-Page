@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const FooterStyles = styled.div`
   @media (max-width: 768px) {
     .footer-main {
-      background-color: var(--blue-dark-2);
+      background-color: var(--blue-dark-1);
       padding: 0 20px 40px 20px;
       color: white;
       .footer-left {
@@ -65,7 +65,7 @@ export const FooterStyles = styled.div`
   }
   @media (min-width: 769px) {
     .footer-main {
-      background-color: var(--blue-dark-2);
+      background-color: var(--blue-dark-1);
       padding: 10px 45px 120px 45px;
       display: flex;
       color: white;

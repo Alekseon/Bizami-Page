@@ -1,12 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import partnersTop from '../assets/images/partners_top.svg';
-import partnersTopMobile from '../assets/images/partners_top_mobile.svg';
-
 const PartnersStyled = styled.section`
   @media (max-width: 768px) {
     padding: 120px 20px 50px 20px;
-    background-color: var(--grey-light);
     text-align: center;
     position: relative;
     .partners-top-decor {
@@ -34,8 +30,7 @@ const PartnersStyled = styled.section`
     }
   }
   @media (min-width: 769px) {
-    padding: 200px 60px 150px 60px;
-    background-color: var(--grey-light);
+    padding: 100px 60px 150px 60px;
     text-align: center;
     position: relative;
     .partners-top-decor {
@@ -67,11 +62,6 @@ const PartnersStyled = styled.section`
 export default function Partners({ data }) {
   return (
     <PartnersStyled>
-      <picture className="partners-top-decor">
-        <source media="(max-width: 768px)" srcet={partnersTopMobile} />
-        <source media="(min-width: 769px)" srcet={partnersTop} />
-        <img src={partnersTop} alt="" />
-      </picture>
       {data.partners &&
         data.partners.map((partner, index) => (
           <div key={`partner-${index}`}>

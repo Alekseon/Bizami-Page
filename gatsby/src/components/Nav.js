@@ -69,7 +69,9 @@ function Nav({ menuState, setMenuState, pageContext, locale }) {
           <ModalBox locale = {locale}  type="button"/>
           
         </li>
-        <LanguageButton locale = {locale}/>
+        <li>
+          <LanguageButton locale = {locale}/>
+        </li>
       </ul>
     
       <button

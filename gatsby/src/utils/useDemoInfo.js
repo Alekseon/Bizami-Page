@@ -11,9 +11,6 @@ export default function useDemoInfo({ values}) {
     
 
     async function submitDemoRequest(e, token) {
-      
-        
-     //   console.log("token", token);
 
         e.persist();
         setLoading(true);

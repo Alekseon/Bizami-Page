@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
-export const SectionHeroStyles = styled.div`
-  padding: 15px 60px;
+export const SectionAboutStyles = styled.div`
+  padding: 100px 60px;
   width: 100%;
-  background: var(--blue-light-1);
   position: relative;
   @media (max-width: 768px) {
     padding: 45px 20px;
@@ -13,16 +12,21 @@ export const SectionHeroStyles = styled.div`
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    max-width: 1320px;
+    max-width: 1440px;
     @media (max-width: 768px) {
       flex-direction: column;
       align-items: flex-start;
     }
     &-text {
+    padding-left: 120px;
       @media (min-width: 769px) {
         max-width: 580px;
         margin-right: 25px;
+        padding-left: 0px;
       }
+       @media (max-width: 460px) {
+         padding-left: 0px;
+       }
       h2 {
         width: fit-content;
         @media (min-width: 769px) {
@@ -36,15 +40,6 @@ export const SectionHeroStyles = styled.div`
         &.h5 {
           display: block;
           font-weight: 400;
-          @media (max-width: 768px) {
-            position: absolute;
-            top: 0;
-            left: 64px;
-            right: 20px;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-          }
         }
         &.title-marked {
           @media (max-width: 768px) {
@@ -69,15 +64,18 @@ export const SectionHeroStyles = styled.div`
         position: absolute;
         top: 0;
         left: 20px;
-        width: 36px;
+        width: 120px;
+      }
+      @media (max-width: 460px) {
+       display: none;
       }
     }
     &.icon {
       margin-left: auto;
       width: min(35vw, 390px);
+      height: auto;
       @media (max-width: 768px) {
         margin-right: auto;
-        height: auto;
         width: min(75vw, 320px);
       }
     }

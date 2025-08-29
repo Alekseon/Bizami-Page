@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Img from 'gatsby-image';
-import { graphql } from 'gatsby';
 import styled from 'styled-components';
 import playIcon from '../assets/images/play-button5-svgrepo-com.svg';
 import playIconHover from '../assets/images/play-button6-svgrepo-com.svg';
@@ -89,7 +87,7 @@ import playIconHover from '../assets/images/play-button6-svgrepo-com.svg';
 
 const VideoStyled = styled.div`
   
-  padding: 30px 0px 0px;
+  padding: 30px 0px 100px;
   .hidden{
     display: none;
     
@@ -148,26 +146,28 @@ const VideoStyled = styled.div`
   .description{
     justify-content: center;
     display: grid;
-    
-    
-    
-    grid-template-columns: 386px 386px ;
+    max-width: 1400px;
+    margin: 0 auto;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 60px 0 160px;
     grid-gap: 150px;
-    
     text-wrap: wrap;
     
     @media (max-width: 1024px) {
-      grid-template-columns: 386px 386px ;
+      grid-template-columns: 1fr 1fr ;
       grid-gap: 10px;
       justify-content: center;
+      padding: 0 60px 0 10vw;
       
     }
     @media (max-width: 786px) {
       grid-template-columns: 1fr;
       grid-template-rows: auto 1fr auto auto;
       grid-column-gap: 0px;
-      margin-left: 30%;
-      margin-right:30%;
+      margin-left: 30px;
+      margin-right:30px;
+      padding: 0;
+      width: fit-content;
     }
   
   
@@ -183,22 +183,32 @@ const VideoStyled = styled.div`
     padding: 0px;
   }
   
+  .imageContainer {
+    margin: auto;
+  }
+  
+  .imgSection {
+    width: 100%;
+    height: auto;
+    max-width: 500px;
+  }
+  
   `
 const VideoTemplate = ({ dataVideo }) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  
-  
 
-  
+
+
+
   const [icon, setIcon] = useState(playIcon);
   const handleMouseOver = () => {
     setIcon(playIconHover);
-    
+
   };
 
   const handleMouseOut = () => {
     setIcon(playIcon);
-    
+
   };
   const handleThumbnailClick = () => {
     setModalOpen(true);
@@ -215,8 +225,8 @@ const VideoTemplate = ({ dataVideo }) => {
       cursor: 'pointer',
       padding: '2px',
       backgroundColor: 'rgba(0, 0, 0, 1)',
-      
-      
+
+
       position: 'relative',
       top: '0',
       left: '0',
@@ -237,7 +247,7 @@ const VideoTemplate = ({ dataVideo }) => {
     },
     modalContent: {
       position: 'relative',
-      
+
       padding: '0px',
       borderRadius: '0px',
       maxWidth: '100%',
@@ -248,40 +258,43 @@ const VideoTemplate = ({ dataVideo }) => {
 
   return (
     <VideoStyled >
-      
-
-        <div className={dataVideo.videoSrcURL===null || dataVideo.videoSrcURL === undefined ? `hidden` : `description`}>
-         <div>
+      <div className="description">
+        <div>
           <p className='title'> {dataVideo.title} </p>
           <p className='videoTitle'> {dataVideo.videoTitle}</p>
           <p className='videoDescription'> {dataVideo.description}</p>
-            </div>
-      
-    <div className='videoDiv'>
-        <button style={styles.thumbnail} onClick={handleThumbnailClick}>
-    <img className='playButton' width={100} height={100} src={icon} onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
-      />
-    <img className='imgButton' width={380} height={190}  src={dataVideo.imageVideo.asset.url} onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut} alt={dataVideo.VideoTitle} />
-        </button>
-    </div> 
-      {isModalOpen && (
-        <div id="modal" style={styles.modal} onClick={closeModal}>
-          <div style={styles.modalContent}>
-            <iframe
-              width="900"
-              height="615"
-              src={dataVideo.videoSrcURL}
-              title={dataVideo.videoTitle}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
         </div>
-        
-      )}
+
+        {dataVideo.videoSrcURL ?
+          <div className='videoDiv'>
+            <button style={styles.thumbnail} onClick={handleThumbnailClick}>
+              <img className='playButton' alt="" width={100} height={100} src={icon} onMouseOver={handleMouseOver}
+                   onMouseOut={handleMouseOut}
+              />
+              <img className='imgButton' alt="" width={380} height={190}  src={dataVideo.imageVideo.asset.url} onMouseOver={handleMouseOver}
+                   onMouseOut={handleMouseOut} alt={dataVideo.VideoTitle} />
+            </button>
+          </div>
+          : <div className="imageContainer">
+            <img className='imgSection' alt="" width={500} height={324}  src={dataVideo.imageVideo.asset.url} />
+          </div>}
+
+        {isModalOpen && (
+          <div id="modal" style={styles.modal} onClick={closeModal}>
+            <div style={styles.modalContent}>
+              <iframe
+                width="900"
+                height="615"
+                src={dataVideo.videoSrcURL}
+                title={dataVideo.videoTitle}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+
+        )}
       </div>
     </VideoStyled>
   );

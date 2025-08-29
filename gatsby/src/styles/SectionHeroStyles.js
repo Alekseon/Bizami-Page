@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import icon from '../assets/images/main-sectiom-bg.png';
 
 export const HeroSectionStyles = styled.div`
   display: flex;
@@ -6,7 +7,9 @@ export const HeroSectionStyles = styled.div`
   align-items: center;
   min-height: 100dvh;
   padding: 152px 60px 25px;
-  background: var(--blue-light-1);
+  background-image: url(${icon});
+  background-repeat: no-repeat;
+  background-size: cover;
   @media (max-width: 768px) {
     padding: 65px 20px 20px;
     flex-direction: column;
@@ -17,13 +20,8 @@ export const HeroSectionStyles = styled.div`
   }
 
   .content {
-    display: grid;
-    align-items: center;
-    grid-template-columns: minmax(auto, 780px) auto;
-    grid-template-rows: auto 1fr auto;
-    grid-column-gap: 80px;
-    grid-row-gap: 20px;
-    max-width: 1320px;
+    color: white;
+    max-width: 1440px;
     @media (max-width: 1024px) {
       grid-template-columns: minmax(auto, 780px) minmax(35vw, auto);
     }

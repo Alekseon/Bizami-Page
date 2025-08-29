@@ -110,6 +110,11 @@ export const query = graphql`
         en
       }
         brackets
+          imageIcon {
+              asset {
+                  url
+              }
+          }
       }
     }
     sanityOffers {
@@ -149,6 +154,11 @@ export const query = graphql`
         _type
         pl
         en
+      }
+      imageIcon {
+          asset {
+            url
+          }
       }
         }
       }

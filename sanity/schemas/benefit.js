@@ -15,5 +15,13 @@ export default {
       title: 'Description',
       type: 'localeText',
     },
+    {
+      name: 'imageIcon',
+      title: 'Icon',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    },
   ],
 };

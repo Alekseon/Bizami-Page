@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import listDot from '../assets/images/list_dot.svg';
-import advantagesTop from '../assets/images/advantages_top.svg';
-import { MediaStyles } from '../styles/MediaStyles';
-import VideoTemplate from '../components/videotemplate';
+import sygnetRight from '../assets/images/sygnet_color_right.svg';
 
 const AdvantagesStyled = styled.section`
+
   @media (max-width: 768px) {
     position: relative;
     .advantages-top-decor {
@@ -23,20 +22,22 @@ const AdvantagesStyled = styled.section`
     .advantages-list {
       list-style-type: none;
       margin-bottom: 100px;
-      padding-left: 65px;
+      padding-left: 0px;
       margin-top: 0;
+      ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
       li {
         position: relative;
-        &::before {
-          content: '';
-          background-size: 50px 57px;
-          background-image: url(${listDot});
-          background-repeat: no-repeat;
-          position: absolute;
-          left: -65px;
-          top: -10px;
-          width: 50px;
-          height: 57px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 30px;
+        img {
+          height: fit-content;
+          object-fit: contain;
         }
         .title-marked {
           display: inline-block;
@@ -48,7 +49,7 @@ const AdvantagesStyled = styled.section`
         }
         p {
           margin-top: 0;
-          margin-bottom: 30px;
+          margin-bottom: 0px;
           font-size: 20px;
         }
       }
@@ -67,20 +68,38 @@ const AdvantagesStyled = styled.section`
     .content {
       padding: 0 60px 50px;
     }
+    .advantages-list{
+      position: relative;
+      &:before {
+        content: '';
+        background-image: url(${sygnetRight});
+        background-repeat: no-repeat;
+        background-position: right center;
+        background-size: contain;
+        position: absolute;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+      }
+    }
     .advantages-list {
       margin-top: 0;
       list-style-type: none;
       margin-bottom: 100px;
-      padding-left: 100px;
+      ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
       li {
         position: relative;
-        &::before {
-          content: url(${listDot});
-          position: absolute;
-          left: -85px;
-          top: -10px;
-          width: 24px;
-          height: 24px;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 30px;
+        img {
+          height: fit-content;
+          object-fit: contain;
         }
         .title-marked {
           display: inline-block;
@@ -91,7 +110,7 @@ const AdvantagesStyled = styled.section`
         }
         p {
           margin-top: 0;
-          margin-bottom: 30px;
+          margin-bottom: 0px;
           font-size: 24px;
         }
       }
@@ -101,41 +120,28 @@ const AdvantagesStyled = styled.section`
 
 export default function Advantages({ data }) {
   return (
-    
+
     <AdvantagesStyled id="advantages">
-      
-        
-       
-          
-        
-      <img
-        className="advantages-top-decor"
-        src={advantagesTop}
-        alt=""
-        width="1440"
-        height="231"
-      />
-      
+
       <div className="content">
         {data.list &&
           data.list.map((list, index) => (
             <div key={`advantage-${index}`}>
               <h2 className="title-marked">{list.titleT}</h2>
-              <ul className="advantages-list">
+              <ul className={`advantages-list advantages-list-${index}`}>
                 {list.list &&
                   list.list.map((item, index) => (
-                    <div key={`advantage-item-${index}`}>
-                      <li>
-                        <p>
+                    <li key={`advantage-item-${index}`}>
+                      {item.imageIcon ? (
+                        <img src={item.imageIcon?.asset.url} alt="" width="80" height="80"/>
+                      ) : (<img src={listDot} alt="" width="80" height="80"/>)}
+                      <p>
                         <span className="title-marked accent">
                             {item.listItemTitleT}
                           </span>{' '}
-                          {item.listItemDescT}
-                          
-                          
-                        </p>
-                      </li>
-                    </div>
+                        {item.listItemDescT}
+                      </p>
+                    </li>
                   ))}
               </ul>
             </div>

@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import azymut from '../assets/images/azymut.svg';
+import background from '../assets/images/about-us-bg.png';
 
 const AzymutStyled = styled.section`
+  background: url(${background});
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
   @media (max-width: 768px) {
     padding: 70px 20px 120px 20px;
     .content {
@@ -26,8 +30,6 @@ const AzymutStyled = styled.section`
   }
   @media (min-width: 769px) {
     padding: 120px 120px 250px 120px;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     .content {
       display: flex;
       flex-direction: column;
@@ -54,11 +56,6 @@ export default function Azymut({ data }) {
         <span>{data.descriptionT.split(/\r|\n/).map((item, index) => {
           return <p key={`line-${index}`}>{item}</p>;
         })}</span>
-      </div>
-      <div className="image-cont">
-        <picture className="contact-top-decor">
-          <img src={azymut} alt="azymut" />
-        </picture>
       </div>
     </AzymutStyled>
   );

@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import locationIcon from '../assets/images/Pin_Icon.svg';
 import mailIcon from '../assets/images/Mail_Icon.svg';
 import phoneIcon from '../assets/images/Phone_Icon.svg';
-import contactTop from '../assets/images/contact_top.svg';
 
 const ContactStyled = styled.section`
+  padding-top: 80px;
   @media (max-width: 768px) {
     position: relative;
     .contact-top-decor {
@@ -17,9 +17,6 @@ const ContactStyled = styled.section`
     }
     .container {
       padding: 0 20px 20px 20px;
-    }
-    .subtitle {
-      margin-left: 15px;
     }
     .title-marked {
       margin-top: -5px;
@@ -79,9 +76,6 @@ const ContactStyled = styled.section`
     }
     .container {
       padding: 0 60px 150px 60px;
-    }
-    .subtitle {
-      margin-left: 15px;
     }
     .title-marked {
       margin-top: -5px;
@@ -160,11 +154,10 @@ export default function Contact({ data }) {
     return () => observer.disconnect();
   }, []);
   return (
-   
+
     <ContactStyled id="contact" ref={contactRef}>
-      <img className="contact-top-decor" src={contactTop} alt="" />
       <div className="container">
-        <h4 className="subtitle">{data.subtitleT}</h4>
+        <h3 className="subtitle">{data.subtitleT}</h3>
         <h2 className="title-marked">{data.titleT}</h2>
         <div className="content">
           <div>
@@ -172,7 +165,7 @@ export default function Contact({ data }) {
               <span>{data.descriptionT.split(/\r|\n/).map((item, index) => {
                 return <p key={`line-${index}`}>{item}</p>;
               })}</span>
-              
+
             </div>
             <ul className="contact-data">
               <li className="location">

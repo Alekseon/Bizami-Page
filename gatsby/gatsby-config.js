@@ -13,20 +13,23 @@ module.exports = {
   plugins: [
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-styled-components",
+    "gatsby-plugin-sitemap",
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host:  'https://bizami.pl/',
+        sitemap: 'https://bizami.pl/sitemap.xml',
+        policy: [{userAgent: '*', allow: '/'}]
+      }
+    },
     {
       resolve: "gatsby-source-sanity",
       options: {
         projectId: "q46bplag",
         dataset: "production",
-        // token trzymaj w env; nazwa dowolna – ważne by była ustawiona w Netlify/locally
         token: process.env.SANITY_TOKEN,
-        useCdn: false,
-        // WYMAGANE: jawna wersja API Sanity
-        apiVersion: process.env.SANITY_API_VERSION || "2024-01-01",
-        // Nie używaj watchMode w produkcji (blokuje buildy)
-        watchMode: isDev,
-        // opcjonalnie: overlayDrafts tylko w dev/preview
-        // overlayDrafts: isDev,
+        watchMode: true,
+        overlayDrafts: true,
       },
     },
     {
@@ -37,4 +40,5 @@ module.exports = {
       },
     },
   ],
+
 };

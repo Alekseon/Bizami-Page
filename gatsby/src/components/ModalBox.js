@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import ReactModal from 'react-modal';
 import demoRequestIcon from '../assets/images/icon_demo_request.svg'
+import icon from '../assets/images/incography2.png'
 
 import { Pg1 } from "../components/FormPage1";
 import { Pg2 } from "./FormPage2";
@@ -24,7 +25,7 @@ import getLocalData from "../utils/getLocalData";
 const Container = styled.div`
   display: grid; /* Ustawienie kontenera jako siatki */
   grid-template-columns: 1fr 3fr; /* Ustawienie dwóch kolumn o jednakowej szerokości */
-  
+  gap: 25px;
   justify-content: space-between;
   width: 100%;
   height: 100%;
@@ -417,18 +418,18 @@ const customStyles = {
     left: '50%',
     right: 'auto',
     bottom: 'auto',
-    marginRight: '-50%',    
+    marginRight: '-50%',
     transform: 'translate(-50%, -50%) scale(1)',
     overflow: 'hidden',
     opacity: '1',
-    
-    
-    
+
+
+
   },
   overlay: {zIndex: 1000,
-  backgroundColor: 'rgba(200, 200, 200, 0.95)',
+    backgroundColor: 'rgba(200, 200, 200, 0.95)',
   }
-  
+
 };
 
 const translations = {
@@ -448,57 +449,57 @@ const translations = {
   },
 };
 
- function getTranslation(key, locale) {
+function getTranslation(key, locale) {
   return translations[locale] && translations[locale][key] ? translations[locale][key] : translations['pl'][key];
 };
 
 
 
 export default function ModalBox({locale}) {
-  
-  
+
+
 
   const  data  = useStaticQuery(graphql`
-    query {
-      sanityModalBox {
-        description1T{
-          _type
-          pl
-          en
-        }
-        description2T{
-          _type
-          pl
-          en
-        }
-        
-        
-        buttonTextT{
-          _type
-          pl
-          en
-        }
-        tytul{
-          _type
-          pl
-          en
-        }
-        PrivacyPolicyText{
-          _type
-          pl
-          en
-        }
-        PrivacyPolicyLink{
-          _type
-          pl
-          en
-        }
-        
-      }
-    }  `);
+      query {
+          sanityModalBox {
+              description1T{
+                  _type
+                  pl
+                  en
+              }
+              description2T{
+                  _type
+                  pl
+                  en
+              }
+
+
+              buttonTextT{
+                  _type
+                  pl
+                  en
+              }
+              tytul{
+                  _type
+                  pl
+                  en
+              }
+              PrivacyPolicyText{
+                  _type
+                  pl
+                  en
+              }
+              PrivacyPolicyLink{
+                  _type
+                  pl
+                  en
+              }
+
+          }
+      }  `);
 
   // Wydobycie zmiennych z state
-  
+
   const [pgNo, setPgNo] = useState(1);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [modalOpen, setModalOpen] = useState(false);
@@ -508,22 +509,22 @@ export default function ModalBox({locale}) {
   const [width, setWidth] = useState();
   const  state  = useContext(FormContext) || {}; // Obsługa przypadku, w którym FormContext nie jest zdefiniowany
 
-  
-  
+
+
   const { submitDemoRequest, loading, message, error } = useDemoInfo({ values: state.state});
-  
+
   const openModal = () => {
     setModalOpen(true);
     setFormSent(false);
-    
-   
+
+
   };
 
   const closeModal = () => {
     setModalOpen(false);
     setFormSent(true);
-    
-    
+
+
   };
 
   const resetForm = () => {
@@ -537,12 +538,12 @@ export default function ModalBox({locale}) {
 
     event.preventDefault();
     const token = await executeRecaptcha('homepage');
-   
-     try {
+
+    try {
       await submitDemoRequest(event,token).then(resetForm());
     } catch (error) {
-       console.error('Wystąpił błąd podczas wysyłania żądania:', error);
-     }
+      console.error('Wystąpił błąd podczas wysyłania żądania:', error);
+    }
 
     setFormSent(true);
     setPgNo(1);
@@ -553,191 +554,191 @@ export default function ModalBox({locale}) {
   const checkPage1 = () => {
 
     let companyInput = document.getElementById('company');
-    
+
     if((companyInput.value !== '') ){
-   
+
       let pg = pgNo;
-    
-     
-      
+
+
+
       setPgNo(pg + 1);
       setTimeout(() => {
         setIsHiddenPg1(true);
         setIsHiddenPg2(false);
-          
-  
-        }, 300);
-    
 
-        
-        
-      
-      
-    
-    
-  } else{
-    document.getElementById('required').style.color = 'red';
-    document.getElementById('company').style.borderColor = 'red';
-    document.getElementById('companyWarning').style.display = 'block';
-}
+
+      }, 300);
+
+
+
+
+
+
+
+
+    } else{
+      document.getElementById('required').style.color = 'red';
+      document.getElementById('company').style.borderColor = 'red';
+      document.getElementById('companyWarning').style.display = 'block';
+    }
   }
-const checkPage2 = async (event) => {
-  let usernameInput = document.getElementById('requiredInput1');
-  let phoneInput = document.getElementById('requiredInput2');
-  let emailInput = document.getElementById('requiredInput3');
-  let usernameLabel = document.getElementById('requiredLabel1');
-  let phoneLabel = document.getElementById('requiredLabel2');
-  let emailLabel = document.getElementById('requiredLabel3');
-  let usernameWarning = document.getElementById('requiredWarning1');
-  let phoneWarning = document.getElementById('requiredWarning2');
-  let emailWarning = document.getElementById('requiredWarning3');
-  
-  let inputs = [usernameInput, phoneInput, emailInput];
-  let labels = [usernameLabel, phoneLabel, emailLabel ]
-  let warnings = [usernameWarning, phoneWarning, emailWarning];
-  
-  
-  let firstEmptyInputFound = false;
-  for (let i = 0; i < inputs.length; i++) {
-              
-              warnings[i].style.display = 'none';
+  const checkPage2 = async (event) => {
+    let usernameInput = document.getElementById('requiredInput1');
+    let phoneInput = document.getElementById('requiredInput2');
+    let emailInput = document.getElementById('requiredInput3');
+    let usernameLabel = document.getElementById('requiredLabel1');
+    let phoneLabel = document.getElementById('requiredLabel2');
+    let emailLabel = document.getElementById('requiredLabel3');
+    let usernameWarning = document.getElementById('requiredWarning1');
+    let phoneWarning = document.getElementById('requiredWarning2');
+    let emailWarning = document.getElementById('requiredWarning3');
+
+    let inputs = [usernameInput, phoneInput, emailInput];
+    let labels = [usernameLabel, phoneLabel, emailLabel ]
+    let warnings = [usernameWarning, phoneWarning, emailWarning];
+
+
+    let firstEmptyInputFound = false;
+    for (let i = 0; i < inputs.length; i++) {
+
+      warnings[i].style.display = 'none';
       let input = inputs[i];
-      
-      if (input.value.trim() === '') {
-          if (!firstEmptyInputFound) {
-              input.style.borderColor = 'red'; // Zmiana koloru krawędzi pola wejściowego na czerwony
-              labels[i].style.color ='red';
-              warnings[i].style.display = 'block';
-              
-              firstEmptyInputFound = true;
-              
-              
-          }
-      }
-  }
 
-  if (!firstEmptyInputFound) {
+      if (input.value.trim() === '') {
+        if (!firstEmptyInputFound) {
+          input.style.borderColor = 'red'; // Zmiana koloru krawędzi pola wejściowego na czerwony
+          labels[i].style.color ='red';
+          warnings[i].style.display = 'block';
+
+          firstEmptyInputFound = true;
+
+
+        }
+      }
+    }
+
+    if (!firstEmptyInputFound) {
       setPgNo(pgNo+1);
       await handleDemoRequest(event);
+    }
   }
-}
 
 
 
-useEffect(() => {
-  if (typeof window !== 'undefined') {
-    setWidth(window.innerWidth);
-    const handleResize = () => {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
       setWidth(window.innerWidth);
-    };
+      const handleResize = () => {
+        setWidth(window.innerWidth);
+      };
 
-    window.addEventListener('resize', handleResize);
-  
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }
-}, []); 
+      window.addEventListener('resize', handleResize);
 
-useEffect(() => {
-  if (typeof window !== 'undefined') {
-    ReactModal.setAppElement('body');
-  }
-}, []); 
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }
+  }, []);
 
-useEffect(() => {
-  if (width <= 768) {
-    customStyles.content.width = '100%';
-    customStyles.content.height = '100%';
-  }else if (width <= 1600 && width >=768 ) {
-    customStyles.content.width = '80%';
-    customStyles.content.height = 'auto%';
-  }
-  else {
-    customStyles.content.width = '50%';
-    customStyles.content.height = 'auto';
-  }
-}, [width]);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      ReactModal.setAppElement('body');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (width <= 768) {
+      customStyles.content.width = '100%';
+      customStyles.content.height = '100%';
+    }else if (width <= 1600 && width >=768 ) {
+      customStyles.content.width = '80%';
+      customStyles.content.height = 'auto%';
+    }
+    else {
+      customStyles.content.width = '50%';
+      customStyles.content.height = 'auto';
+    }
+  }, [width]);
 
 
 
 
   return (
-    
+
     <>
-  
-       {!modalOpen && <ModalButton id="demo" onClick={openModal}>{getTranslation('demoRequest', locale)}</ModalButton>}
-        {modalOpen && ( 
-        <ReactModal 
+
+      {!modalOpen && <ModalButton id="demo" onClick={openModal}>{getTranslation('demoRequest', locale)}</ModalButton>}
+      {modalOpen && (
+        <ReactModal
           isOpen={modalOpen}
           onRequestClose={closeModal}
           appElement={typeof window !== 'undefined' ? document.getElementById("root") : null}
           style={customStyles}
         >
-          
-            <Times className="close" onClick={closeModal}>&times;</Times>
-            <ModalStyles>
-            {!formSent &&  (   <div>
-              
-               <h2 className={`title-marked ${pgNo === 3 ? 'fadeOut2' : ''}`}>{getLocalData('tytul',data.sanityModalBox, locale)
-               }</h2>
-                  <Container>
-                    <div>
-                     <img className={`demoRequestIcon ${pgNo === 3 ? 'fadeOut3' : ''}`} src={demoRequestIcon} width="284" height="281" alt="" />
-                    </div>
-                    <div>
-                      <div className="mobileHidden">
-                        <p className={pgNo === 3 ? 'fadeOut' : 'text'}> 
-                          {getLocalData('description1T',data.sanityModalBox, locale)}
-                        </p>
-                      </div>
-                      <div className="mobileContent">
-                        <p className={pgNo === 3 ? 'fadeOut' : 'text'}>
-                        {getLocalData('description2T',data.sanityModalBox, locale)}
-                        </p>
-                      
-                        <div className={isHiddenPg1 ? 'hidden' : pgNo === 1 ? '' : 'fadeOut'}>
-                          <Pg1 locale={locale}  />
-                        </div>
-                        <div className={isHiddenPg2 ? 'hidden' : pgNo === 2 ? 'fadeIn' : 'fadeOut'}>
-                          <Pg2 locale={locale} />
-                        </div>
-                      </div>
 
-                      <div className={isHiddenPg1 ? 'hidden' : pgNo === 1 ? '' : 'fadeOut'}>
-                      <button
-                        className="formButton"
-                        type="button"
-                        onClick={checkPage1}
-                      >
-                        {getTranslation('next', locale)}
-                      </button>
-                      
+          <Times className="close" onClick={closeModal}>&times;</Times>
+          <ModalStyles>
+            {!formSent &&  (   <div>
+
+              <h2 className={`${pgNo === 3 ? 'fadeOut2' : ''}`}>{getLocalData('tytul',data.sanityModalBox, locale)
+              }</h2>
+              <Container>
+                <div>
+                  <img className={`demoRequestIcon ${pgNo === 3 ? 'fadeOut3' : ''}`} src={icon} width="284" height="281" alt="" />
+                </div>
+                <div>
+                  <div className="mobileHidden">
+                    <p className={pgNo === 3 ? 'fadeOut' : 'text'}>
+                      {getLocalData('description1T',data.sanityModalBox, locale)}
+                    </p>
+                  </div>
+                  <div className="mobileContent">
+                    <p className={pgNo === 3 ? 'fadeOut' : 'text'}>
+                      {getLocalData('description2T',data.sanityModalBox, locale)}
+                    </p>
+
+                    <div className={isHiddenPg1 ? 'hidden' : pgNo === 1 ? '' : 'fadeOut'}>
+                      <Pg1 locale={locale}  />
                     </div>
-                        <div className={isHiddenPg2 ? 'hidden' : pgNo === 2 ? 'fadeIn' : 'fadeOut'}>
-                      <div className="submit " >
-                        <p className="text2">{getLocalData('PrivacyPolicyText',data.sanityModalBox, locale)}&nbsp;
+                    <div className={isHiddenPg2 ? 'hidden' : pgNo === 2 ? 'fadeIn' : 'fadeOut'}>
+                      <Pg2 locale={locale} />
+                    </div>
+                  </div>
+
+                  <div className={isHiddenPg1 ? 'hidden' : pgNo === 1 ? '' : 'fadeOut'}>
+                    <button
+                      className="formButton"
+                      type="button"
+                      onClick={checkPage1}
+                    >
+                      {getTranslation('next', locale)}
+                    </button>
+
+                  </div>
+                  <div className={isHiddenPg2 ? 'hidden' : pgNo === 2 ? 'fadeIn' : 'fadeOut'}>
+                    <div className="submit " >
+                      <p className="text2">{getLocalData('PrivacyPolicyText',data.sanityModalBox, locale)}&nbsp;
                         <a href={getTranslation('href',locale)} target="_blank" rel="noopener noreferrer">
-                        {getLocalData('PrivacyPolicyLink',data.sanityModalBox, locale)}</a></p>
-                        <button
-                          className="submitButton"
-                          onClick={checkPage2}>
-                          {getLocalData('buttonTextT',data.sanityModalBox, locale)}
-                        </button>
-                      </div>
-                      </div>
-                         
-                          </div>
-                          
-                        </Container>       
-                      </div>)}
-                      {!error && formSent && message && (<div className="fadeIn" id="contact-modal-success"><h4 className="fadeIn">Potwierdzenie otrzymania zgłoszenia</h4><p className="fadeIn">{message}</p></div>)}
-                      {error && formSent && message && (<div className="fadeIn"><h4>Wystąpił problem</h4><p>{message}</p></div>)}
-                    </ModalStyles>
-                  </ReactModal>
-                )}       
-            </>
-          );
-        };
+                          {getLocalData('PrivacyPolicyLink',data.sanityModalBox, locale)}</a></p>
+                      <button
+                        className="submitButton"
+                        onClick={checkPage2}>
+                        {getLocalData('buttonTextT',data.sanityModalBox, locale)}
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+
+              </Container>
+            </div>)}
+            {!error && formSent && message && (<div className="fadeIn" id="contact-modal-success"><h4 className="fadeIn">Potwierdzenie otrzymania zgłoszenia</h4><p className="fadeIn">{message}</p></div>)}
+            {error && formSent && message && (<div className="fadeIn"><h4>Wystąpił problem</h4><p>{message}</p></div>)}
+          </ModalStyles>
+        </ReactModal>
+      )}
+    </>
+  );
+};
 
        
