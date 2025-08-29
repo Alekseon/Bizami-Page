@@ -42,8 +42,8 @@ export async function onRequestPost({ request, env }) {
     }
 
     stage = "check-env";
-    const recSecret = process.env.SECRET_KEY;
-    const smtpSecret = process.env.SMTPXP_SECRET;
+    const recSecret = env.SECRET_KEY;
+    const smtpSecret = env.SMTPXP_SECRET;
     const smtpSender = "test@test.pl";
     const smtpTo = to || "a.sobanska@alekseon.com";
 
