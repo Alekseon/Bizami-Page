@@ -1,41 +1,54 @@
 // functions/api/send-email.js
 // Cloudflare Pages Functions (Workers runtime)
 
+export async function onRequestOptions() {
+  // Preflight CORS (dev: localhost:8000 -> 127.0.0.1:8788)
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "access-control-allow-origin": "*", // PROD: wpisz konkretny origin
+      "access-control-allow-methods": "POST, OPTIONS",
+      "access-control-allow-headers": "content-type, authorization",
+    },
+  });
+}
+
 export async function onRequestPost({ request, env }) {
-  const json = (obj, status = 200) =>
+  const json = (obj, status = 200, extraHeaders = {}) =>
     new Response(JSON.stringify(obj), {
       status,
-      headers: { "content-type": "application/json; charset=utf-8" },
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "*", // PROD: wpisz konkretny origin
+        ...extraHeaders,
+      },
     });
 
   try {
     const body = await request.json().catch(() => ({}));
+
     const {
       company,
-      name,
       email,
       phone,
       erp,
       quantity,
       message: userMessage,
-      recaptchaToken,          // <-- token z frontu
-      to,                      // (opcjonalnie) odbiorca z frontu
-      subject,                 // (opcjonalnie) własny temat
-      action = "contact_form", // (opcjonalnie) nazwa akcji v3
+      recaptchaToken,          // token z frontu (wymagany)
+      to,                      // opcjonalny odbiorca z frontu
+      subject,                 // opcjonalny custom subject
+      action = "contact_form", // nazwa akcji reCAPTCHA v3
     } = body || {};
 
-    // --- walidacja wejścia ---
-    const required = ["company", "name", "email", "recaptchaToken"];
-    const missing = required.filter((k) => !body?.[k]);
+    // Walidacja wejścia
+    const missing = ["company", "email", "recaptchaToken"].filter((k) => !body?.[k]);
     if (missing.length) {
       return json({ ok: false, message: `Brak pól: ${missing.join(", ")}` }, 400);
     }
 
     // --- reCAPTCHA VERIFY ---
-    const secret = env.RECAPTCHA_SECRET;
-    if (!secret) {
-      return json({ ok: false, message: "Brak RECAPTCHA_SECRET w env" }, 500);
-    }
+    const secret = process.env.SECRET_KEY;
+    if (!secret) return json({ ok: false, message: "Brak SECRET_KEY w env" }, 500);
 
     const form = new URLSearchParams();
     form.set("secret", secret);
@@ -47,9 +60,8 @@ export async function onRequestPost({ request, env }) {
     });
     const ver = await g.json();
 
-    const minScore = Number(env.RECAPTCHA_MIN_SCORE ?? "0.5");
-    const expectedAction = 'homepage' || action;
-
+    const minScore = Number(process.env.RECAPTCHA_MIN_SCORE ?? "0.5");
+    const expectedAction = process.env.RECAPTCHA_EXPECTED_ACTION || action;
     const scoreOk = typeof ver.score === "number" ? ver.score >= minScore : true;
     const actionOk = expectedAction ? ver.action === expectedAction : true;
 
@@ -73,9 +85,9 @@ export async function onRequestPost({ request, env }) {
     }
 
     // --- SMTPExpress SEND API ---
-    const smtpSecret = env.SMTPXP_SECRET;
-    const senderEmail = env.SMTPXP_SENDER; // adres nadawcy z SMTPExpress
-    const defaultTo = env.SMTPXP_TO;       // domyślny odbiorca (np. Twoja skrzynka)
+    const smtpSecret = process.env.SMTPXP_SECRET;
+    const senderEmail = process.env.SMTPXP_SENDER; // adres nadawcy z SMTPExpress
+    const defaultTo = process.env.SMTPXP_TO;       // domyślny odbiorca
 
     if (!smtpSecret || !senderEmail) {
       return json({ ok: false, message: "Brak SMTPXP_SECRET/SMTPXP_SENDER w env" }, 500);
@@ -110,25 +122,21 @@ export async function onRequestPost({ request, env }) {
         subject: emailSubject,
         message: html,
         sender: { name: "Formularz", email: senderEmail },
-        recipients, // string lub tablica e-maili
+        recipients, // string lub tablica adresów
       }),
     });
 
-    const txt = await r.text();
+    const txt = await r.text(); // API może zwrócić tekst/JSON — i tak zwrócimy własny JSON
     if (!r.ok) {
       return json({ ok: false, message: "SMTPExpress odrzucił żądanie", details: txt }, 502);
     }
 
     return json({ ok: true, message: "Dziękujemy! Zgłoszenie zostało wysłane." }, 200);
   } catch (e) {
-    return new Response(
-      JSON.stringify({ ok: false, message: "Błąd serwera", error: String(e) }),
-      { status: 500, headers: { "content-type": "application/json; charset=utf-8" } }
-    );
+    return json({ ok: false, message: "Błąd serwera", error: String(e) }, 500);
   }
 }
 
-// prosta funkcja unikająca wstrzyknięć w HTML maila
 function escapeHtml(s = "") {
   return String(s)
     .replaceAll("&", "&amp;")

@@ -1,12 +1,38 @@
 // src/utils/useDemoInfo.js
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
+
+async function parseJsonSafe(res) {
+    const ct = res.headers.get("content-type") || "";
+    const text = await res.text(); // czytamy raz
+    if (ct.includes("application/json")) {
+        try {
+            return JSON.parse(text || "{}");
+        } catch {
+            return {};
+        }
+    }
+    return { ok: res.ok, message: text || (res.ok ? "OK" : "Error") };
+}
 
 export default function useDemoInfo({ values = {} }) {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [error, setError] = useState(false);
 
-    const base = "/api"; // Cloudflare Pages Functions (mapowane z /functions/api/*)
+    // Baza API:
+    // - PROD: "/api" (Pages Functions)
+    // - DEV (gatsby develop: :8000): 127.0.0.1:8788 jeśli nie ustawiono GATSBY_API_BASE
+    const base = useMemo(() => {
+        const envBase = (process.env.GATSBY_API_BASE || "/api").replace(/\/+$/, "");
+        if (typeof window !== "undefined") {
+            const { hostname, port } = window.location;
+            const isGatsbyDev = hostname === "localhost" && port === "8000";
+            if (isGatsbyDev && !process.env.GATSBY_API_BASE) {
+                return "http://127.0.0.1:8788/api"; // wrangler pages dev
+            }
+        }
+        return envBase;
+    }, []);
 
     const submitDemoRequest = useCallback(
       async (event, recaptchaToken) => {
@@ -18,19 +44,26 @@ export default function useDemoInfo({ values = {} }) {
               const res = await fetch(`${base}/send-email`, {
                   method: "POST",
                   headers: { "content-type": "application/json" },
-                  body: JSON.stringify({ ...values, recaptchaToken, action: "contact_form" }),
+                  body: JSON.stringify({
+                      ...values,
+                      recaptchaToken,
+                      action: "contact_form",
+                  }),
               });
 
-              let payload = {};
-              try { payload = await res.json(); } catch {}
+              const payload = await parseJsonSafe(res);
 
               if (!res.ok || payload?.ok === false) {
-                  const err = new Error(payload?.message || "Wysyłka formularza nie powiodła się");
+                  const err = new Error(
+                    payload?.message || "Wysyłka formularza nie powiodła się"
+                  );
                   err.details = payload;
                   throw err;
               }
 
-              setMessage(payload?.message || "Dziękujemy! Twoje zgłoszenie zostało przesłane.");
+              setMessage(
+                payload?.message || "Dziękujemy! Twoje zgłoszenie zostało przesłane."
+              );
               setError(false);
           } catch (e) {
               setError(true);
@@ -40,7 +73,7 @@ export default function useDemoInfo({ values = {} }) {
               setLoading(false);
           }
       },
-      [values]
+      [base, values]
     );
 
     return { submitDemoRequest, loading, message, error };
